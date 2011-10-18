@@ -74,3 +74,15 @@
  
 #define OP 127 
 #define RELOP 128
+
+struct entry {  /*  form of symbol table entry  */
+  char *lexptr; 
+  int  token;    
+};
+
+struct entry keywords[] = {
+  { "div", DIV },
+  { "mod", MOD, },
+  { 0,     0 }
+};
+
