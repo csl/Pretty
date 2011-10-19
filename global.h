@@ -38,7 +38,6 @@
 #define VOLATILE 31 
 #define WHILE 32 
  
- 
 #define ID 100 
 #define NUM 101 
 #define ADD 102 
@@ -79,10 +78,3 @@ struct entry {  /*  form of symbol table entry  */
   char *lexptr; 
   int  token;    
 };
-
-struct entry keywords[] = {
-  { "div", DIV },
-  { "mod", MOD, },
-  { 0,     0 }
-};
-
