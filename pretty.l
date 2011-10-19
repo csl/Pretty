@@ -25,7 +25,7 @@ ch	[^\n\'"]
 {digit}+ {write_int();}
 {digit}*.{digit}*({exp}) {write_fp();}
 {alpha}({alpha}|{digit})* {write_id();}
-^#. { write_directive(); }
+^#[^\n]* { write_directive(); }
 "{" {write_begin();}
 "}" {write_end();}
 "(" {write_open();}
@@ -37,7 +37,7 @@ ch	[^\n\'"]
 "//" { write_inline(); }
 ^#. { write_directive(); }
 "(\t|\r|\n|\v|\f)" { }
-
+"==" { write_op();}
 %%
 
 extern struct entry symtable[];
@@ -45,6 +45,7 @@ extern struct entry symtable[];
 int line = 1;
 int column = 4;
 int paren = 0;
+int local_variables = 0;
 
 void indent()
 { 
@@ -142,13 +143,12 @@ void write_close()
 
 void write_directive()
 {
-    printf("<font color=\"#FF00FF\">'<strong>");
+    printf("<font color=\"#FF00FF\"><strong>");
     write_html();
-    printf("</strong>'</font>");
+    printf("</strong></font>");
 }
 
 void write_char()
-
 {
     printf("<font color=\"brown\">'<u>");
 	write_html();
@@ -187,6 +187,7 @@ void write_id()
 {
     char *s = yytext;
 	int result = lookup(s);
+	int i=0, set=0;
 
 	if (result != 0)
 	{
@@ -202,6 +203,12 @@ void write_id()
 		}
 		else
 		{
+			
+			if (symtable[result].token == INT || symtable[result].token == CHAR || symtable[result].token == FLOAT || symtable[result].token == DOUBLE)
+			{
+				local_variables = 1;
+			}
+
   			printf("<strong>");
   			write_html();
   			printf("</strong>");
@@ -209,10 +216,20 @@ void write_id()
 	}
 	else
 	{
-		//ID, first I meet
-		printf("<a name=\"");
-		write_html();
-		printf("\"/>");
+		if (column == 4 || local_variables == 0)
+		{
+			insert(s, ID);
+			local_variables = 0;
+			//ID, first I meet
+			printf("<a name=\"");
+			write_html();
+			printf("\"/>");
+		}
+		else
+		{
+			local_variables = 0;
+			write_html();
+		}
 	}
 }
 
@@ -246,6 +263,7 @@ void write_bclose()
 
 int main()
 {
+	init();
 	printf("<html><pre>\n");
 	indent();
 	yylex();
