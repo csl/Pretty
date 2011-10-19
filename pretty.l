@@ -38,6 +38,41 @@ ch	[^\n\'"]
 ^#. { write_directive(); }
 "(\t|\r|\n|\v|\f)" { }
 "==" { write_op();}
+"!=" { write_op();}
+"=" { write_op();}
+"+" { write_op();}
+"-" { write_op();}
+"*" { write_op();}
+"/" { write_op();}
+"%" { write_op();}
+"<<" { write_op();}
+">>" { write_op();}
+"^" { write_op();}
+"++" { write_op();}
+"--" { write_op();}
+"+=" { write_op();}
+"-=" { write_op();}
+"*=" { write_op();}
+"/=" { write_op();}
+"%=" { write_op();}
+"&=" { write_op();}
+"|=" { write_op();}
+"^=" { write_op();}
+"<<=" { write_op();}
+">>=" { write_op();}
+"~" { write_op();}
+"|" { write_op();}
+"&" { write_op();}
+"||" { write_op();}
+"&&" { write_op();}
+">" { write_op();}
+">=" { write_op();}
+"<" { write_op();}
+"<=" { write_op();}
+"!" { write_op();}
+":" { write_op();}
+"?" { write_op();}
+
 %%
 
 extern struct entry symtable[];
